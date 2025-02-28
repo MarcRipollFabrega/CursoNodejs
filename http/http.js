@@ -1,10 +1,18 @@
-const http = require('node:http')
+// Conectar en el puerto libre
+const http = require('node:http') // protocolo HTTP
+const { findAvailablePort } = require('./free-port.js')
+
+console.log(process.env)
+
+const desiredPort = process.env.PORT ?? 3000
 
 const server = http.createServer((req, res) => {
-    console.log('request received')
-    res.end('Hola mundo')
+  console.log('request received')
+  res.end('Hola mundo')
 })
 
-server.listen(0, () =>{
-    console.log(`server listening on port http://localhost:${server.address().port}`)
+findAvailablePort(desiredPort).then(port => {
+  server.listen(port, () => {
+    console.log(`server listening on port http://localhost:${port}`)
+  })
 })
